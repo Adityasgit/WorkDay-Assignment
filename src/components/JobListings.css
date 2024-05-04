@@ -1,0 +1,8 @@
+.listings {
+  display: flex;
+  background-color: #f5f5f5;
+  width: 100vw;
+  padding: 10px;
+  min-height: 100%;
+  overflow: scroll;
+}

@@ -1,5 +1,3 @@
-// src/features/counter/counterSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
 
 export const filterSlice = createSlice({
@@ -8,37 +6,36 @@ export const filterSlice = createSlice({
         minExperience: null,
         companyName: '',
         location: '',
-        remote: false,
+        remote: "",
         techStack: [],
-        role: '',
+        role: [],
         minBasePay: null,
     },
     reducers: {
-
-        setMinExperience: (state, action) => {
+        setMinExperienceAction: (state, action) => {
             state.minExperience = action.payload;
         },
-        setCompanyName: (state, action) => {
+        setCompanyNameAction: (state, action) => {
             state.companyName = action.payload;
         },
-        setLocation: (state, action) => {
+        setLocationAction: (state, action) => {
             state.location = action.payload;
         },
-        setIsRemote: (state, action) => {
-            state.isRemote = action.payload;
+        setIsRemoteAction: (state, action) => {
+            state.remote = action.payload;
         },
-        setTechStack: (state, action) => {
+        setTechStackAction: (state, action) => {
             state.techStack = action.payload;
         },
-        setRole: (state, action) => {
+        setRoleAction: (state, action) => {
             state.role = action.payload;
         },
-        setMinBasePay: (state, action) => {
+        setMinBasePayAction: (state, action) => {
             state.minBasePay = action.payload;
         },
     },
 });
 
-export const { setCompanyName, setIsRemote, setLocation, setMinBasePay, setMinExperience, setRole, setTechStack } = filterSlice.actions;
+export const { setMinExperienceAction, setCompanyNameAction, setLocationAction, setIsRemoteAction, setTechStackAction, setRoleAction, setMinBasePayAction } = filterSlice.actions;
 
 export default filterSlice.reducer;
