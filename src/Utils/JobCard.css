@@ -1,0 +1,11 @@
+.card {
+  margin: 1vmax;
+  /* max-height: 30vmax; */
+}
+.card:hover {
+  scale: 1.03;
+  transition: all 0.07s linear;
+}
+.outercard {
+  box-shadow: inset 0px -9vmax 1px rgba(160, 157, 157, 0.387);
+}

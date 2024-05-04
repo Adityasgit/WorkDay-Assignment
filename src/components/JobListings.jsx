@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -20,6 +19,7 @@ import {
   setMinBasePayAction,
 } from "../features/filter/filterReducer";
 import "./JobListings.css";
+import JobCard from "../Utils/JobCard";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -165,7 +165,22 @@ function JobListings() {
       }
       main={
         <>
-          <div className="listings">akjldsnkjn</div>
+          <div className="listings">
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+            <JobCard />
+          </div>
         </>
       }
     />
