@@ -1,11 +1,38 @@
 .card {
   margin: 1vmax;
-  /* max-height: 30vmax; */
+  transition: all 0.5s linear;
 }
 .card:hover {
-  scale: 1.03;
+  scale: 1.003;
   transition: all 0.07s linear;
 }
 .outercard {
   box-shadow: inset 0px -9vmax 1px rgba(160, 157, 157, 0.387);
+}
+.cardbody {
+  height: 100%;
+  padding: 1vmax;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+.smooth {
+  transition: all 0.5s linear;
+}
+.top {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr 5fr;
+}
+.des {
+  color: rgba(35, 35, 35, 0.594);
+}
+.links > button {
+  padding: 8px 1px;
+  background-color: darkblue;
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 6px;
 }
