@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export const filterSlice = createSlice({
     name: 'filters',
     initialState: {
-        minExperience: null,
+        minExperience: "",
         companyName: '',
         location: '',
         remote: "",
         techStack: [],
         role: [],
-        minBasePay: null,
+        minBasePay: "",
     },
     reducers: {
         setMinExperienceAction: (state, action) => {

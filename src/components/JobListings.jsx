@@ -38,8 +38,7 @@ const experiences = Utils.getExperiences();
 const locations = Utils.getLocations();
 
 function JobListings() {
-  const { experience, companyName, location, remote, minBasePay, role } =
-    useSelector((state) => state.filters);
+  const filters = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   const [offset, setOffset] = React.useState(0);
   const { jobs, max } = useSelector((state) => state.jobs);
@@ -54,12 +53,30 @@ function JobListings() {
       return;
     }
     const uniqueProductIds = new Set(allJobs.map((prod) => prod.jdUid));
-    console.log(uniqueProductIds);
 
     const newJobs = jobs.filter((prod) => !uniqueProductIds.has(prod.jdUid));
 
     setAllJobs((old) => [...old, ...newJobs]);
   }, [jobs, allJobs]);
+  React.useEffect(() => {
+    if (filters.experience && filters.experience !== "") {
+      setAllJobs((prev) =>
+        prev.filter((job) => {
+          return job.minExp <= filters.experience;
+        })
+      );
+    }
+    if (filters.minBasePay && filters.minBasePay !== "") {
+      setAllJobs((prev) =>
+        prev.filter(
+          (job) =>
+            (job.minJdSalary ? job.minJdSalary : 0) >=
+            Number(filters.minBasePay)
+        )
+      );
+      console.log(Number(filters.minBasePay));
+    }
+  }, [filters]);
   return (
     <BluePrint
       header={
@@ -71,7 +88,7 @@ function JobListings() {
                 labelId="role-label"
                 id="role-select"
                 multiple
-                value={role?.length >= 0 ? role : []}
+                value={filters.role?.length >= 0 ? filters.role : []}
                 onChange={(e) => {
                   const newRole =
                     typeof e.target.value === "string"
@@ -91,7 +108,9 @@ function JobListings() {
               >
                 {roles.map((roleOption) => (
                   <MenuItem key={roleOption.value} value={roleOption.value}>
-                    <Checkbox checked={role?.includes(roleOption.value)} />
+                    <Checkbox
+                      checked={filters.role?.includes(roleOption.value)}
+                    />
                     <ListItemText primary={roleOption.name} />
                   </MenuItem>
                 ))}
@@ -106,7 +125,7 @@ function JobListings() {
               <Select
                 labelId="demo-Experience-select-label"
                 id="demo-Experience-select"
-                value={experience}
+                value={filters.experience}
                 label="Experience"
                 onChange={(e) => {
                   dispatch(setMinExperienceAction(e.target.value));
@@ -126,7 +145,7 @@ function JobListings() {
               <Select
                 labelId="demo-Location-select-label"
                 id="demo-Location-select"
-                value={remote}
+                value={filters.remote}
                 label="Location"
                 onChange={(e) => {
                   dispatch(setIsRemoteAction(e.target.value));
@@ -146,7 +165,7 @@ function JobListings() {
                 id="outlined-location"
                 label="Location"
                 variant="outlined"
-                value={location}
+                value={filters.location}
                 onChange={(e) => {
                   dispatch(setLocationAction(e.target.value));
                 }}
@@ -160,7 +179,7 @@ function JobListings() {
                 id="outlined-name"
                 label="Company Name"
                 variant="outlined"
-                value={companyName}
+                value={filters.companyName}
                 onChange={(e) => {
                   dispatch(setCompanyNameAction(e.target.value));
                 }}
@@ -174,7 +193,8 @@ function JobListings() {
                 id="outlined-name"
                 label="Minimum Base Pay(USD)"
                 variant="outlined"
-                value={minBasePay}
+                type="number"
+                value={filters.minBasePay}
                 onChange={(e) => {
                   dispatch(setMinBasePayAction(e.target.value));
                 }}
@@ -201,7 +221,8 @@ function JobListings() {
             }
           >
             <div className="listings">
-              {allJobs && allJobs.map((info) => <JobCard info={info} />)}
+              {allJobs &&
+                allJobs.map((info) => <JobCard key={info.jdUid} info={info} />)}
             </div>
           </InfiniteScroll>
         </>
