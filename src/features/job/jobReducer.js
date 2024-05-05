@@ -31,8 +31,8 @@ export const jobSlice = createSlice({
     reducers: {
         setJobs: (state, action) => {
             state.jobs = action.payload.jdList;
-            state.max = 20;
-            // state.max = action.payload.totalCount;
+            // state.max = 20;
+            state.max = action.payload.totalCount;
         }
     },
 
