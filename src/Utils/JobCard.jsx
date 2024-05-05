@@ -1,9 +1,16 @@
 import { Card, CardContent } from "@mui/material";
 import React from "react";
 import "./JobCard.css";
-const cardheight = window.innerWidth > 750 ? 500 : 450;
+const cardheight = window.innerWidth > 750 ? 550 : 450;
 const cardwidth = window.innerWidth > 750 ? 250 : 177;
-const JobCard = () => {
+function capitalizeFirstChar(str) {
+  if (!str) {
+    return str;
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const JobCard = ({ info }) => {
   const [h, setH] = React.useState(cardheight);
   return (
     <div className="">
@@ -31,7 +38,19 @@ const JobCard = () => {
           >
             <div style={{ height: "50%" }} className="top">
               {" "}
-              <div>1</div>
+              <div style={{ position: "relative" }}>
+                <img
+                  src={info.logoUrl}
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    position: "absolute",
+                    top: "6px",
+                    left: "-6px",
+                  }}
+                  alt=""
+                />
+              </div>
               <div
                 style={{
                   display: "grid",
@@ -43,22 +62,22 @@ const JobCard = () => {
                   style={{
                     color: "gray",
                     letterSpacing: "1px",
-                    fontSize: "small",
+                    fontSize: "15px",
                   }}
                 >
-                  Emma
+                  {capitalizeFirstChar(info.companyName)}
                 </div>
                 <div
                   style={{
-                    fontSize: "14px",
+                    fontSize: "18px",
                     fontWeight: "bold",
                     color: "grey",
                   }}
                 >
-                  Software Productivity Engineer
+                  {capitalizeFirstChar(info.jobRole)}
                 </div>
-                <div style={{ fontSize: "10px", fontWeight: "bold" }}>
-                  Bangalore
+                <div style={{ fontSize: "13px", fontWeight: "bold" }}>
+                  {capitalizeFirstChar(info.location)}
                 </div>
               </div>
             </div>
@@ -77,7 +96,9 @@ const JobCard = () => {
                   fontWeight: "bold",
                 }}
               >
-                Estimated Salary: ₹30 - 50 LPA✅
+                {`  Estimated Salary: ₹${
+                  info.minJdSalary ? info.minJdSalary : "0"
+                } - ${info.maxJdSalary ? info.maxJdSalary : "~"} LPA✅`}
               </div>
             </div>
             <div
@@ -104,19 +125,7 @@ const JobCard = () => {
                 : { height: "fit-content" }
             }
           >
-            m cupiditate molestiae corporis architecto praesentium tempora ullam
-            quae aut cum ratione saepe velit, vero et iure incidunt inventore
-            suscipit itaque! Quam, molestias. Fuga dolor iste illum! Molestiae
-            repellendus dolorum repudiandae nobis saepe iste? Eligendi, porro!
-            Eligendi, commodi. Architecto, iure suscipit tenetur fugit, neque
-            qui animi corrupti quibusdam iste ad eius, veniam quam. In molestiae
-            iusto hic beatae inventore nobis ipsum quis officiis cumque quae
-            accusantium asperiores, numquam ex voluptatibus assumenda natus id
-            excepturi tenetur, veniam dicta dolores pariatur? Aliquam sunt
-            mollitia necessitatibus. Praesentium repellat possimus ipsam illum
-            dignissimos, impedit exercitationem optio aliquid harum, cum ab
-            ratione temporibus maxime tenetur quod non enim id nisi ducimus ex
-            nulla dolores! Voluptates, provident? Atque, cupiditate!
+            {info.jobDetailsFromCompany}
           </div>
           <button
             className=""
@@ -133,6 +142,16 @@ const JobCard = () => {
           >
             {h === cardheight ? "see more" : "see less"}
           </button>
+          <div>
+            <div
+              style={{ fontSize: "small", color: "grey", letterSpacing: "2px" }}
+            >
+              Minimun Experience
+            </div>
+            <div
+              style={{ fontSize: "13px", fontWeight: "bold", padding: "3px" }}
+            >{`${info.minExp ? info.minExp : 0} years`}</div>
+          </div>
           <div
             style={{
               height: "8vmax",

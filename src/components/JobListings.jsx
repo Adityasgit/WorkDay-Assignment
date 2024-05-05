@@ -10,6 +10,7 @@ import BluePrint from "../Utils/BluePrint";
 import { Checkbox, ListItemText, TextField } from "@mui/material";
 import { Utils } from "../Utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 import {
   setCompanyNameAction,
   setIsRemoteAction,
@@ -18,6 +19,7 @@ import {
   setMinExperienceAction,
   setMinBasePayAction,
 } from "../features/filter/filterReducer";
+import { fetchJobListAction } from "../features/job/jobReducer";
 import "./JobListings.css";
 import JobCard from "../Utils/JobCard";
 const ITEM_HEIGHT = 48;
@@ -39,7 +41,25 @@ function JobListings() {
   const { experience, companyName, location, remote, minBasePay, role } =
     useSelector((state) => state.filters);
   const dispatch = useDispatch();
+  const [offset, setOffset] = React.useState(0);
+  const { jobs, max } = useSelector((state) => state.jobs);
+  const [allJobs, setAllJobs] = React.useState([]);
+  React.useEffect(() => {
+    dispatch(fetchJobListAction(offset));
+  }, [dispatch, offset]);
 
+  React.useEffect(() => {
+    if (allJobs.length === 0) {
+      setAllJobs([...jobs]);
+      return;
+    }
+    const uniqueProductIds = new Set(allJobs.map((prod) => prod.jdUid));
+    console.log(uniqueProductIds);
+
+    const newJobs = jobs.filter((prod) => !uniqueProductIds.has(prod.jdUid));
+
+    setAllJobs((old) => [...old, ...newJobs]);
+  }, [jobs, allJobs]);
   return (
     <BluePrint
       header={
@@ -165,22 +185,25 @@ function JobListings() {
       }
       main={
         <>
-          <div className="listings">
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-            <JobCard />
-          </div>
+          <InfiniteScroll
+            dataLength={allJobs.length} //This is important field to render the next data
+            next={() => setOffset((prev) => prev + 1)}
+            hasMore={max !== allJobs.length}
+            loader={
+              <div style={{ margin: "auto", textAlign: "center" }}>
+                Loading...
+              </div>
+            }
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>You have reached the end</b>
+              </p>
+            }
+          >
+            <div className="listings">
+              {allJobs && allJobs.map((info) => <JobCard info={info} />)}
+            </div>
+          </InfiniteScroll>
         </>
       }
     />
